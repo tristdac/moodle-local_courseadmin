@@ -15,17 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Local plugin "staticpage" - Version file
+ * Local plugin "courseadmin" - Version file
  *
- * @package    local_staticpage
+ * @package    local_courseadmin
  * @copyright  2013 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_staticpage';
-$plugin->version = 2016050900;
-$plugin->release = 'v3.0-r4';
+$plugin->component = 'local_courseadmin';
+$plugin->version = 2017022300;
+$plugin->release = 'v0.1';
 $plugin->requires = 2015111600;
 $plugin->maturity = MATURITY_STABLE;

@@ -15,24 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Local plugin "staticpage" - Library
+ * Local plugin "courseadmin" - Library
  *
- * @package    local_staticpage
+ * @package    local_courseadmin
  * @copyright  2013 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 // defined('MOODLE_INTERNAL') || die(); - Must not be called because this script is called from outside moodle
 
-define('STATICPAGE_TITLE_H1', 1);
-define('STATICPAGE_TITLE_HEAD', 2);
+define('COURSEADMIN_TITLE_H1', 1);
+define('COURSEADMIN_TITLE_HEAD', 2);
 
-define('STATICPAGE_FORCELOGIN_YES', 1);
-define('STATICPAGE_FORCELOGIN_NO', 2);
-define('STATICPAGE_FORCELOGIN_GLOBAL', 3);
+define('COURSEADMIN_FORCELOGIN_YES', 1);
+define('COURSEADMIN_FORCELOGIN_NO', 2);
+define('COURSEADMIN_FORCELOGIN_GLOBAL', 3);
 
-define('STATICPAGE_PROCESSFILTERS_YES', 1);
-define('STATICPAGE_PROCESSFILTERS_NO', 2);
+define('COURSEADMIN_PROCESSFILTERS_YES', 1);
+define('COURSEADMIN_PROCESSFILTERS_NO', 2);
 
-define('STATICPAGE_CLEANHTML_YES', 1);
-define('STATICPAGE_CLEANHTML_NO', 2);
+define('COURSEADMIN_CLEANHTML_YES', 1);
+define('COURSEADMIN_CLEANHTML_NO', 2);

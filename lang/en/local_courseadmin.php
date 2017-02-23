@@ -24,9 +24,9 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$string['pluginname'] = 'Static Pages';
+$string['pluginname'] = 'Course Admin';
 $string['apacherewrite'] = 'Force Apache mod_rewrite';
-$string['apacherewrite_desc'] = 'Serve static pages only with a clean URL, rewritten by Apache mod_rewrite. See README file for details.';
+$string['apacherewrite_desc'] = 'Serve Course Admin page only with a clean URL, rewritten by Apache mod_rewrite. See README file for details.';
 $string['cleanhtml'] = 'Clean HTML code';
 $string['cleanhtml_desc'] = 'Configure if the static page\'s HTML code should be cleaned (and thereby special tags like <iframe> being removed). See README for details.';
 $string['cleanhtmlyes'] = 'Yes, clean HTML code';
@@ -42,12 +42,12 @@ $string['documenttitlesource_desc'] = 'The data source of the static page\'s doc
 $string['documenttitlesourceh1'] = 'First h1 tag in HTML code (usually located shortly after opening the body tag)';
 $string['documenttitlesourcehead'] = 'First title tag in HTML code (usually located within the head tag)';
 $string['forcelogin'] = 'Force login';
-$string['forcelogin_desc'] = 'Serve static pages only to logged in users or also to non-logged in visitors. This behaviour can be set specifically for static pages or can be set to respect Moodle\'s global forcelogin setting. See README for details.';
+$string['forcelogin_desc'] = 'Serve Course Admin page only to logged in users or also to non-logged in visitors. This behaviour can be set specifically for Course Admin or can be set to respect Moodle\'s global forcelogin setting. See README for details.';
 $string['forceloginglobal'] = 'Respect the global setting $CFG->forcelogin';
 $string['pagenotfound'] = 'Page not found';
 $string['processcontent'] = 'Process content';
 $string['processfilters'] = 'Process filters';
-$string['processfilters_desc'] = 'Configure if Moodle filters (especially the multilanguage filter) should be processed when serving the static page\'s content. See README for details.';
+$string['processfilters_desc'] = 'Configure if Moodle filters (especially the multilanguage filter) should be processed when serving the Course Admin page\'s content. See README for details.';
 $string['processfiltersyes'] = 'Yes, process filters';
 $string['processfiltersno'] = 'No, don\'t process filters';
 $string['upgrade_notice_2016020307'] = '<strong>UPGRADE NOTICE:</strong> The static page document files were moved to the new filearea within Moodle. You can delete the legacy documents directory {$a} now. For more upgrade instructions, especially if you have been using the multilanguage features of this plugin, see README file.';

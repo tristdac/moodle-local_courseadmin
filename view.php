@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Local plugin "staticpage" - View page
+ * Local plugin "courseadmin" - View page
  *
- * @package    local_staticpage
+ * @package    local_courseadmin
  * @copyright  2013 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,15 +34,15 @@ require_once('../../config.php');
 global $PAGE;
 
 // Get plugin config
-$local_staticpage_config = get_config('local_staticpage');
+$local_courseadmin_config = get_config('local_courseadmin');
 
 // Require login if the plugin or Moodle is configured to force login
-if ($local_staticpage_config->forcelogin == STATICPAGE_FORCELOGIN_YES || ($local_staticpage_config->forcelogin == STATICPAGE_FORCELOGIN_GLOBAL && $CFG->forcelogin)) {
+if ($local_courseadmin_config->forcelogin == COURSEADMIN_FORCELOGIN_YES || ($local_courseadmin_config->forcelogin == COURSEADMIN_FORCELOGIN_GLOBAL && $CFG->forcelogin)) {
     require_login();
 }
 
 // View only with /static/ URL
-if ($local_staticpage_config->apacherewrite == true) {
+if ($local_courseadmin_config->apacherewrite == true) {
     if (strpos($_SERVER['REQUEST_URI'], '/static/') > 0 || strpos($_SERVER['REQUEST_URI'], '/static/') === false) {
         die;
     }
@@ -62,11 +62,11 @@ $context = \context_system::instance();
 $fs = get_file_storage();
 
 // Get document from filearea
-$file = $fs->get_file($context->id, 'local_staticpage', 'documents', 0, '/', $filename);
+$file = $fs->get_file($context->id, 'local_courseadmin', 'documents', 0, '/', $filename);
 
 // If no file is found, quit with error message
 if (!$file) {
-    print_error('pagenotfound', 'local_staticpage');
+    print_error('pagenotfound', 'local_courseadmin');
 }
 
 // Get file content
@@ -99,11 +99,11 @@ if (!empty($staticdoc->getElementsByTagName('style')->item(0)->nodeValue)) {
 }
 
 // Set page url
-if ($local_staticpage_config->apacherewrite == true) {
+if ($local_courseadmin_config->apacherewrite == true) {
     $PAGE->set_url('/static/'.$page.'.html');
 }
 else {
-    $PAGE->set_url('/local/staticpage/view.php?page='.$page);
+    $PAGE->set_url('/local/courseadmin/view.php?page='.$page);
 }
 
 // Set page context
@@ -115,10 +115,10 @@ $PAGE->set_pagelayout('standard');
 
 
 // Set page title
-if ($local_staticpage_config->documenttitlesource == STATICPAGE_TITLE_H1) {
+if ($local_courseadmin_config->documenttitlesource == COURSEADMIN_TITLE_H1) {
     $PAGE->set_title($firsth1);
 }
-else if ($local_staticpage_config->documenttitlesource == STATICPAGE_TITLE_HEAD) {
+else if ($local_courseadmin_config->documenttitlesource == COURSEADMIN_TITLE_HEAD) {
     $PAGE->set_title($title);
 }
 else {
@@ -126,10 +126,10 @@ else {
 }
 
 // Set page heading
-if ($local_staticpage_config->documentheadingsource == STATICPAGE_TITLE_H1) {
+if ($local_courseadmin_config->documentheadingsource == COURSEADMIN_TITLE_H1) {
     $PAGE->set_heading($firsth1);
 }
-else if ($local_staticpage_config->documentheadingsource == STATICPAGE_TITLE_H1) {
+else if ($local_courseadmin_config->documentheadingsource == COURSEADMIN_TITLE_H1) {
     $PAGE->set_heading($title);
 }
 else {
@@ -137,10 +137,10 @@ else {
 }
 
 // Set page navbar
-if ($local_staticpage_config->documentnavbarsource == STATICPAGE_TITLE_H1) {
+if ($local_courseadmin_config->documentnavbarsource == COURSEADMIN_TITLE_H1) {
     $PAGE->navbar->add($firsth1);
 }
-else if ($local_staticpage_config->documentnavbarsource == STATICPAGE_TITLE_HEAD) {
+else if ($local_courseadmin_config->documentnavbarsource == COURSEADMIN_TITLE_HEAD) {
     $PAGE->navbar->add($title);
 }
 else {
@@ -158,16 +158,16 @@ $stopcut = strpos($html, '</body>') - $startcut;
 $html = substr($html, $startcut, $stopcut);
 
 // Print html code
-if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_YES && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_YES) {
+if ($local_courseadmin_config->processfilters == COURSEADMIN_PROCESSFILTERS_YES && $local_courseadmin_config->cleanhtml == COURSEADMIN_CLEANHTML_YES) {
     echo format_text($html, FORMAT_HTML, array('trusted' => false, 'noclean' => false, 'filter' => true));
 }
-else if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_YES && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_NO) {
+else if ($local_courseadmin_config->processfilters == COURSEADMIN_PROCESSFILTERS_YES && $local_courseadmin_config->cleanhtml == COURSEADMIN_CLEANHTML_NO) {
     echo format_text($html, FORMAT_HTML, array('trusted' => true, 'noclean' => true, 'filter' => true));
 }
-else if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_NO && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_YES) {
+else if ($local_courseadmin_config->processfilters == COURSEADMIN_PROCESSFILTERS_NO && $local_courseadmin_config->cleanhtml == COURSEADMIN_CLEANHTML_YES) {
     echo format_text($html, FORMAT_HTML, array('trusted' => false, 'noclean' => false, 'filter' => false));
 }
-else if ($local_staticpage_config->processfilters == STATICPAGE_PROCESSFILTERS_NO && $local_staticpage_config->cleanhtml == STATICPAGE_CLEANHTML_NO) {
+else if ($local_courseadmin_config->processfilters == COURSEADMIN_PROCESSFILTERS_NO && $local_courseadmin_config->cleanhtml == COURSEADMIN_CLEANHTML_NO) {
     echo format_text($html, FORMAT_HTML, array('trusted' => true, 'noclean' => true, 'filter' => false));
 }
 // This should not happen
