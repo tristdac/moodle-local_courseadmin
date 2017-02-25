@@ -1,0 +1,119 @@
+section#region-main {
+    margin-left: 0px;
+}
+
+table {
+	width: 100%;
+}
+.c0 {
+	width:  4%;
+}
+
+.c1 {
+	width: 48%;
+}
+
+.c2 {
+	width: 48%;
+}
+th {
+    text-align: left;
+	border-bottom: 1px solid #eee;
+	font-size: 15px;
+	padding: 10px 0;
+}
+td {
+    padding: 5px 0;
+}
+tr:nth-child(even) {
+    background: #f7f7f7;
+}
+td.c2 {
+    font-weight: 100;
+    font-size: smaller;
+    color: #565656;
+}
+
+
+.tabs-left .tab-pane li {
+    list-style: none;
+    padding: 5px 0;
+}
+
+.group li:before {
+    content: "\f0c0 ";
+    font-family: FontAwesome;
+    margin-right: 5px;
+	color:#9e9e9e;
+}
+
+.group li {
+    margin-left: 29px;
+    color: #9e9e9e;
+}
+
+/* Bootstrap Vertical Tabs */
+/* custom inclusion of right, left and below tabs */
+
+.tabs-below > .nav-tabs,
+.tabs-right > .nav-tabs,
+.tabs-left > .nav-tabs {
+  border-bottom: 0;
+}
+
+.tabs-left .tab-content > .tab-pane,
+.tabs-left .pill-content > .pill-pane {
+  display: none;
+}
+
+.tabs-left .tab-content > .active,
+.tabs-left .pill-content > .active {
+  display: block;
+}
+
+.tabs-left > .nav-tabs > li,
+.tabs-right > .nav-tabs > li {
+  float: none;
+}
+
+.tabs-left > .nav-tabs > li > a,
+.tabs-right > .nav-tabs > li > a {
+  min-width: 74px;
+  margin-right: 0;
+  margin-bottom: 3px;
+}
+
+.tabs-left > .nav-tabs {
+  float: left;
+  margin-right: 0px !important;
+  border-right: 1px solid #ddd;
+}
+
+.tabs-left > .nav-tabs > li > a {
+  margin-right: -1px;
+  -webkit-border-radius: 4px 0 0 4px;
+     -moz-border-radius: 4px 0 0 4px;
+          border-radius: 4px 0 0 4px;
+}
+
+.tabs-left > .nav-tabs > li > a:hover,
+.tabs-left > .nav-tabs > li > a:focus {
+  font-weight: bold;
+}
+
+.tabs-left > .nav-tabs .active > a,
+.tabs-left > .nav-tabs .active > a:hover,
+.tabs-left > .nav-tabs .active > a:focus {
+  border-right-color: #ffffff;
+  background: transparent;
+	border-color: #ddd #fff #ddd #ddd !important;
+}
+.tabs-left .nav-tabs>li>a {
+    border-color: #fff #ddd #fff #fff;
+}
+.tabs-left .tab-pane.active {
+	padding: 10px 40px;
+    border: 1px solid #ddd;
+    border-width: 1px 0px 0px 0px;
+    border-left-color: #ddd;
+}

@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Local plugin "staticpage" - Language pack
+ * Local plugin "courseadmin" - Language pack
  *
- * @package    local_staticpage
+ * @package    local_courseadmin
  * @copyright  2013 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -51,3 +51,65 @@ $string['processfilters_desc'] = 'Configure if Moodle filters (especially the mu
 $string['processfiltersyes'] = 'Yes, process filters';
 $string['processfiltersno'] = 'No, don\'t process filters';
 $string['upgrade_notice_2016020307'] = '<strong>UPGRADE NOTICE:</strong> The static page document files were moved to the new filearea within Moodle. You can delete the legacy documents directory {$a} now. For more upgrade instructions, especially if you have been using the multilanguage features of this plugin, see README file.';
+
+$string['collegedatabase:config'] = 'Configure database enrol instances';
+$string['collegedatabase:unenrol'] = 'Unenrol suspended users';
+$string['collegedatabase:receiveerrorsemail'] = 'Receive messages when Edinburgh College databse synchronisation fails';
+$string['dbencoding'] = 'Database encoding';
+$string['dbhost'] = 'Database host';
+$string['dbhost_desc'] = 'Type database server IP address or host name. Use a system DSN name if using ODBC.';
+$string['dbname'] = 'Database name';
+$string['dbname_desc'] = 'Leave empty if using a DSN name in database host.';
+$string['dbpass'] = 'Database password';
+$string['dbsetupsql'] = 'Database setup command';
+$string['dbsetupsql_desc'] = 'SQL command for special database setup, often used to setup communication encoding - example for MySQL and PostgreSQL: <em>SET NAMES \'utf8\'</em>';
+$string['dbsybasequoting'] = 'Use sybase quotes';
+$string['dbsybasequoting_desc'] = 'Sybase style single quote escaping - needed for Oracle, MS SQL and some other databases. Do not use for MySQL!';
+$string['dbtype'] = 'Database driver';
+$string['dbtype_desc'] = 'ADOdb database driver name, type of the external database engine.';
+$string['dbuser'] = 'Database user';
+$string['debugdb'] = 'Debug ADOdb';
+$string['debugdb_desc'] = 'Debug ADOdb connection to external database - use when getting empty page during login. Not suitable for production sites!';
+$string['defaultrole'] = 'Default role';
+$string['defaultrole_desc'] = 'The role that will be assigned by default if no other role is specified in external table.';
+$string['ignorehiddencourses'] = 'Ignore hidden courses';
+$string['ignorehiddencourses_desc'] = 'If enabled users will not be enrolled on courses that are set to be unavailable to students.';
+$string['localcategoryfield'] = 'Local category field';
+$string['localcoursefield'] = 'Local course field';
+$string['localrolefield'] = 'Local role field';
+$string['localuserfield'] = 'Local user field';
+$string['newcoursetable'] = 'Remote new courses table';
+$string['newcoursetable_desc'] = 'Specify of the name of the table that contains list of courses that should be created automatically. Empty means no courses are created.';
+$string['newcoursecategory'] = 'New course category field';
+$string['newcoursesubcategory'] = 'New course subcategory field';
+$string['newcoursefullname'] = 'New course full name field';
+$string['newcourseidnumber'] = 'New course ID number field';
+$string['newcourseshortname'] = 'New course short name field';
+$string['newcoursedescription'] = 'New course description field';
+$string['remotecoursefield'] = 'Remote course field';
+$string['remotecoursefield_desc'] = 'The name of the field in the remote table that we are using to match entries in the course table.';
+$string['remoteenroltable'] = 'Remote user enrolment table';
+$string['remoteenroltable_desc'] = 'Specify the name of the table that contains list of user enrolments. Empty means no user enrolment sync.';
+$string['remoteotheruserfield'] = 'Remote Other User field';
+$string['remoteotheruserfield_desc'] = 'The name of the field in the remote table that we are using to flag "Other User" role assignments.';
+$string['remoterolefield'] = 'Remote role field';
+$string['remoterolefield_desc'] = 'The name of the field in the remote table that we are using to match entries in the roles table.';
+$string['remoteuserfield'] = 'Remote user field';
+$string['settingsheaderdb'] = 'External database connection';
+$string['settingsheaderlocal'] = 'Local field mapping';
+$string['settingsheaderremote'] = 'Remote enrolment sync';
+$string['settingsheadernewcourses'] = 'Creation of new courses';
+$string['remoteuserfield_desc'] = 'The name of the field in the remote table that we are using to match entries in the user table.';
+$string['newcourseyear'] = 'Current course year';
+$string['newcourseyear_desc'] = 'The year of the courses currently in the remote course table, courses will be created with this as the highest level category.';
+$string['sync_enrolments'] = 'Synchronise enrolments for existing users and courses from Edinburgh College database';
+$string['sync_users'] = 'Synchronise users (provision new and update only) from Edinburgh College database';
+$string['sync_courses'] = 'Synchronise courses (provision new and update fullname, shortname only) from Edinburgh College database';
+$string['settingsheaderusers'] = 'User information';
+$string['userstable'] = 'Remote user table';
+$string['userstable_desc'] = 'Table of valid users to be created or updated. Leave empty or disable scheduled task to stop';
+$string['usersusername'] = 'Username';
+$string['usersfirstname'] = 'First name';
+$string['userslastname'] = 'Last name';
+$string['usersemail'] = 'Email address';
+$string['messageprovider:errors'] = 'Error notifications from the users and enrolments synchronisation scheduled tasks';
