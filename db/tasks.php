@@ -15,17 +15,26 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Local plugin "courseadmin" - Version file
+ * Definition of OUblog scheduled tasks.
  *
- * @package    local_courseadmin
- * @copyright  2013 Alexander Bias, University of Ulm <alexander.bias@uni-ulm.de>
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package mod_oublog
+ * @category task
+ * @copyright 2014 The Open University
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'local_courseadmin';
-$plugin->version = 2017022701;
-$plugin->release = 'v0.3';
-$plugin->requires = 2015111600;
-$plugin->maturity = MATURITY_STABLE;
+global $CFG;
+
+$tasks = array(
+    array(
+        'classname' => 'local_courseadmin\task\cron_task',
+        'blocking' => 0,
+        'minute' => '20',
+        'hour' => '*',
+        'day' => '*',
+        'month' => '*',
+        'dayofweek' => '*'
+    )
+);
