@@ -56,7 +56,7 @@ class cron_task extends \core\task\scheduled_task {
 		
 		
 		// Write Enrolments
-		mysqli_query($conn, "INSERT IGNORE INTO md_enrolments (userid, courseid, role, role_code) SELECT ec.userid, ec.courseid, ec.role, ec.role_code FROM ec_enrolments ec LEFT JOIN md_enrolments md ON ec.userid=md.userid AND ec.courseid=md.courseid WHERE (ec.unenrol IS NULL OR ec.unenrol = '0') AND not exists (SELECT * FROM md_enrolments where ec.userid=md.userid AND ec.courseid=md.courseid)");
+		mysqli_query($conn, "INSERT IGNORE INTO md_enrolments (userid, courseid, role, role_code) SELECT ec.userid, ec.courseid, ec.role, ec.role_code FROM ec_enrolments ec LEFT JOIN md_enrolments md ON ec.userid=md.userid AND ec.courseid=md.courseid WHERE (ec.unenrol IS NULL OR ec.unenrol = '0') AND not exists (SELECT 1 FROM md_enrolments where ec.userid=md.userid AND ec.courseid=md.courseid)");
 		
 		mysqli_query($conn, "REMOVE FROM md_enrolments (userid, courseid, role, role_code) SELECT userid, courseid, role, role_code FROM ec_enrolments WHERE ec_enrolments.unenrol IS NULL OR ec_enrolments.unenrol = '1'");
 		

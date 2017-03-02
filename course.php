@@ -25,6 +25,7 @@
 require_once(dirname(__FILE__) . '/lib.php');
 // Include config.php
 require_once('../../config.php');
+require_login();
 // Globals
 global $PAGE, $USER;
 // Get plugin config
@@ -62,8 +63,8 @@ if (count($_POST) > 0) {
     $created = $_POST['created'];
     array_map('intval', $created);
     $created = implode(',', $created);
-//    mysqli_query($conn, "UPDATE ec_courses SET created=0") or trigger_error(mysqli_error($conn), E_USER_ERROR);
-    mysqli_query($conn, "UPDATE ec_courses SET created = 1 WHERE id IN ($created)") or trigger_error(mysqli_error($conn), E_USER_ERROR);
+    mysqli_query($conn, "UPDATE ec_courses SET created = 1 WHERE idnumber IN ($created)") or trigger_error(mysqli_error($conn), E_USER_ERROR);
+	mysqli_query($conn, "UPDATE ec_enrolments SET enrol = 1 WHERE courseid IN ($created)") or trigger_error(mysqli_error($conn), E_USER_ERROR);
     $updatedcourse = TRUE;
 }
 }
@@ -73,19 +74,43 @@ if (count($_POST) > 0) {
     $meta = $_POST['meta'];
     array_map('intval', $meta);
     $meta = implode(',', $meta);
-    mysqli_query($conn, "UPDATE ec_courses SET meta=0") or trigger_error(mysqli_error($conn), E_USER_ERROR);
-    mysqli_query($conn, "UPDATE ec_courses SET meta=1 WHERE id IN ($meta)") or trigger_error(mysqli_error($conn), E_USER_ERROR);
-    $updatedmeta = TRUE;
+	if ( isset( $_POST['parent'] ) ) {
+		foreach ( $_POST['parent'] as $parent ) {
+//	$parent = $_POST['unique'];
+//	array_map('intval', $parent);
+//    $parent = implode(',', $parent);
+
+//	$child = $_POST['unique'];
+//	array_map('intval', $child);
+//    $child = implode(',', $child);
+//	$unique = $_POST['unique'];
+//	array_map('intval', $unique);
+//    $unique = implode(',', $unique);
+//	$parent = '111';
+	if ( isset( $_POST['child'] ) ) {
+	foreach ( $_POST['child'] as $child ) {
+		$unique = $parent . $child;
+//    mysqli_query($conn, "UPDATE md_meta SET meta=0 WHERE id IN ($meta)") or trigger_error(mysqli_error($conn), E_USER_ERROR);
+	$insert = "INSERT IGNORE INTO md_meta (enrol, status, courseid, sortorder, name, enrolperiod, enrolstartdate, enrolenddate, expirynotify, expirythreshold, notifyall, password, cost, currency, roleid, customint1, customint2, customint3, customint4, customint5, customint6, customint7, customint8, customchar1, customchar2, customchar3, customdec1, customdec2, customtext1, customtext2, customtext3, customtext4, timecreated, timemodified)
+	VALUES ('meta', '0', '$parent', '0', 'NULL', '0', '0', '0', '0', '0', '0', 'NULL', 'NULL', 'NULL', '0', '$child', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '$unique', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL',  UNIX_TIMESTAMP(), UNIX_TIMESTAMP())";
+	$remove = "DELETE FROM md_meta WHERE courseid NOT IN ($parent) AND customint1 = ($child)";
+    mysqli_query($conn, $insert) or trigger_error(mysqli_error($conn), E_USER_ERROR);
+	mysqli_query($conn, $remove) or trigger_error(mysqli_error($conn), E_USER_ERROR);
+}
+		}
+		}
+}
+	    $updatedmeta = TRUE;
 }
 }
 $updatedenrol = FALSE;
-if (isset($_POST["unenrol"])) {
+if (isset($_POST["enrol"])) {
 if (count($_POST) > 0) {
-    $unenrol = $_POST['unenrol'];
-    array_map('intval', $unenrol);
-    $unenrol = implode(',', $unenrol);
-    mysqli_query($conn, "UPDATE ec_enrolments SET unenrol=1") or trigger_error(mysqli_error($conn), E_USER_ERROR);
-    mysqli_query($conn, "UPDATE ec_enrolments SET unenrol=0 WHERE id IN ($unenrol)") or trigger_error(mysqli_error($conn), E_USER_ERROR);
+    $enrol = $_POST['enrol'];
+    array_map('intval', $enrol);
+    $enrol = implode(',', $enrol);
+    mysqli_query($conn, "UPDATE ec_enrolments SET enrol=0 WHERE (courseid NOT IN ($enrol)) AND userid = '$username'") or trigger_error(mysqli_error($conn), E_USER_ERROR);
+    mysqli_query($conn, "UPDATE ec_enrolments SET enrol=1 WHERE courseid IN ($enrol) AND userid = '$username'") or trigger_error(mysqli_error($conn), E_USER_ERROR);
     $updatedenrol = TRUE;
 }
 }
@@ -133,7 +158,7 @@ $sql = "SELECT ec_courses.id, ec_courses.idnumber, ec_courses.fullname, ec_cours
 $result = mysqli_query($conn, $sql) or trigger_error(mysqli_error($conn), E_USER_ERROR);
 while (list($id, $idnumber, $fullname, $description, $created) = mysqli_fetch_row($result)) {
     $checked = ($created == 1) ? 'checked="checked"' : '';
-    echo '<tr class="c0"><td><input type="checkbox" id="check' . $id . '" name="created[]" value="' . $id . '" ' . $checked . '/></td><td class="c1">' . $fullname . '</td><td class="c2">' . $description . '</td></tr>' . "\n";
+    echo '<tr class="c0"><td><input type="checkbox" id="check' . $id . '" name="created[]" value="' . $idnumber . '" ' . $checked . '/></td><td class="c1">' . $fullname . '</td><td class="c2">' . $description . '</td></tr>' . "\n";
 	if ($checked) {
 		?>
 		<script>
@@ -170,12 +195,14 @@ if ($updatedmeta === TRUE) {
 	<li class="active"><a href="#0" data-toggle="tab"><b>Select a Course</b></a></li>
           <?php
 $count = 1;
-$sql = "SELECT ec_courses.id, ec_courses.idnumber, ec_courses.fullname, ec_courses.description, ec_courses.created, ec_enrolments.courseid, ec_enrolments.userid FROM ec_courses INNER JOIN ec_enrolments ON ec_courses.idnumber = ec_enrolments.courseid WHERE (ec_enrolments.userid = '$username' AND INSTR (ec_courses.shortname, '/') AND ec_courses.created = '1') ORDER by ec_courses.fullname ASC";
+$sql = "SELECT ec_courses.idnumber, ec_courses.fullname, ec_courses.created, ec_enrolments.courseid, ec_enrolments.userid FROM ec_courses INNER JOIN ec_enrolments ON ec_courses.idnumber = ec_enrolments.courseid WHERE (ec_enrolments.userid = '$username' AND INSTR (ec_courses.shortname, '/') AND ec_courses.created = '1') ORDER by ec_courses.fullname ASC";
 $result = mysqli_query($conn, $sql) or trigger_error(mysqli_error($conn), E_USER_ERROR);
-while (list($id, $idnumber, $fullname, $description, $created) = mysqli_fetch_row($result)) {
+while (list($parentidnumber, $fullname) = mysqli_fetch_row($result)) {
     $incrementli = $count;
+//	echo $parentidnumber;
     echo '<li><a href="#' . $incrementli . '" data-toggle="tab">' . $fullname . '</a></li>' . "\n";
     $incrementli = $count++;
+	echo '<input type="hidden" name="parent[]" value="' . $parentidnumber . '" />';
 }
 ?>
 </ul>
@@ -196,14 +223,26 @@ while (list($id, $idnumber, $fullname, $description, $created, $shortname) = mys
     $incrementdiv = $count;
     echo '<div class="tab-pane" id="' . $incrementdiv . '">';
 	echo '<h4>Your other units containing <b>"' . $currentname . '"</b> in the title</h4>';
+//	echo $idnumber;
 	echo '<ul>';
-    $sqlli = "SELECT ec_courses.id, ec_courses.idnumber, ec_courses.fullname, ec_courses.description, ec_courses.created, ec_courses.shortname, ec_courses.meta, ec_enrolments.courseid, ec_enrolments.userid FROM ec_courses INNER JOIN ec_enrolments ON ec_courses.idnumber = ec_enrolments.courseid WHERE (ec_enrolments.userid = '$username' AND INSTR (ec_courses.shortname, '/') AND ec_courses.shortname != '$shortname') ORDER by ec_courses.fullname ASC";
-$resultli = mysqli_query($conn, $sqlli) or trigger_error(mysqli_error($conn), E_USER_ERROR);
-	while (list($idli, $idnumberli, $fullnameli, $descriptionli, $createdli, $shortnameli, $meta) = mysqli_fetch_row($resultli)) {
+    $sqlli = "SELECT ec_enrolments.courseid, ec_courses.id, ec_courses.idnumber, ec_courses.fullname, ec_courses.description, ec_courses.created, ec_courses.shortname, md_meta.courseid, md_meta.customint1, ec_enrolments.userid FROM ec_courses INNER JOIN ec_enrolments ON ec_enrolments.courseid = ec_courses.idnumber LEFT JOIN md_meta ON ec_courses.idnumber = md_meta.customint1 WHERE (ec_enrolments.userid = '$username' AND INSTR (ec_courses.shortname, '/') AND ec_courses.shortname != '$shortname') ORDER by ec_courses.fullname ASC";
+	$resultli = mysqli_query($conn, $sqlli) or trigger_error(mysqli_error($conn), E_USER_ERROR);
+	while (list($courseid, $idli, $childidnumber, $fullnameli, $descriptionli, $createdli, $shortnameli, $metaparent, $metachild) = mysqli_fetch_row($resultli)) {
 		if ((strpos($shortnameli, $current) !== false) || (strpos($fullnameli, $currentname) !== false)) {
-		$checked = ($meta == 1) ? 'checked="checked"' : '';
-        echo '<p><li><input type="hidden" name="meta[]" value="0" /><input type="checkbox" name="meta[]" value="' . $idli . '" ' . $checked . '/>  ' . $fullnameli . '</li><ul class="group"><li>' . $descriptionli . '</li></ul></p>' . "\n";
-    }
+		if ($metaparent = $idnumber) {
+			$metachecked = 1;
+		}
+		if (($metachild != $childidnumber) && ($idli != $metaparent) && ($parentidnumber != $metaparent)) {
+			$metachecked = 0;
+		}
+//		echo $metaparent;
+		$checked = ($metachecked == 1) ? 'checked="checked"' : '';
+        echo '<p><li><input type="hidden" name="meta[]" value="0" /><input type="checkbox" name="meta[]" value="' . $childidnumber . '" ' . $checked . '/>' . $fullnameli . '</li><ul class="group"><li>' . $descriptionli . '</li></ul></p>' . "\n";
+    	
+		echo 
+			'<input type="hidden" name="child[]" value="' . $childidnumber . '" />
+			<input type="hidden" name="unique[]" value="' . $idli . '" />';
+	}
 	}
 echo '</ul></div>' . "\n";
 $incrementdiv = $count++;
@@ -234,17 +273,17 @@ if ($updatedenrol === TRUE) {
 				<th class="c2"><i class="fa fa-group"></i> Group</th>
 				</tr>
 				<?php
-$sql = "SELECT ec_enrolments.id, ec_courses.idnumber, ec_courses.fullname, ec_courses.description, ec_courses.created, ec_enrolments.unenrol, ec_enrolments.courseid, ec_enrolments.userid FROM ec_enrolments INNER JOIN ec_courses ON ec_enrolments.courseid = ec_courses.idnumber WHERE ec_enrolments.userid = '$username' AND (ec_courses.created = '1' OR shortname LIKE '__________-____') ORDER by ec_courses.created DESC, ec_courses.fullname ASC";
+$sql = "SELECT ec_enrolments.courseid, ec_courses.idnumber, ec_courses.fullname, ec_courses.description, ec_courses.created, ec_enrolments.enrol, ec_enrolments.courseid, ec_enrolments.userid FROM ec_enrolments INNER JOIN ec_courses ON ec_enrolments.courseid = ec_courses.idnumber WHERE ec_enrolments.userid = '$username' AND (ec_courses.created = '1' OR shortname LIKE '__________-____') ORDER by ec_courses.created DESC, ec_courses.fullname ASC";
 $result = mysqli_query($conn, $sql) or trigger_error(mysqli_error($conn), E_USER_ERROR);
-while (list($iden, $idnumberen, $fullnameen, $descriptionen, $createden, $unenrol) = mysqli_fetch_row($result)) {
-//	if ($unenrol = 1) {
-//		$unenrolled = 1;
+while (list($iden, $idnumberen, $fullnameen, $descriptionen, $createden, $enrol) = mysqli_fetch_row($result)) {
+//	if ($enrol = 1) {
+//		$enrolled = 1;
 //	}
-//	if ($unenrol = 0){
-//		$unenrolled = 0;
+//	if ($enrol = 0){
+//		$enrolled = 0;
 //	}
-    $checked = ($unenrol == 0 ) ? 'checked="checked"' : '';
-    echo '<tr class="c0"><td><input type="hidden" name="unenrol[]" value="1" /><input type="checkbox" name="unenrol[]" value="' . $iden . '" ' . $checked . '/></td><td class="c1">' . $fullnameen . '</td><td class="c2">' . $descriptionen . ' </td></tr>' . "\n";
+    $checked = ($enrol == 1 ) ? 'checked="checked"' : '';
+    echo '<tr class="c0"><td><input type="hidden" name="enrol[]" value="0" /><input type="checkbox" name="enrol[]" value="' . $idnumberen . '" ' . $checked . '/></td><td class="c1">' . $fullnameen . '</td><td class="c2">' . $descriptionen . ' </td></tr>' . "\n";
 }
 ?>
 					<tr><td colspan="2" id="submit"><input type="submit" name="submitenrol" value="Save Selection" style="margin:20px 0;"/></td></tr>
